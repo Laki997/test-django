@@ -114,3 +114,7 @@ GitHub.sublime-settings
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
+
+# operating system-related files
+# file properties cache/storage on macOS
+*.DS_Store
