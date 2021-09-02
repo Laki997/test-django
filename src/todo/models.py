@@ -1,24 +1,16 @@
 from django.db import models
-from src.users import models as users_models
+from django.db.models.enums import IntegerChoices
+from src.users.models import User
 
 
-# Create your models here.
+class ToDoPriority(IntegerChoices):
+    LOW = 1, 'LOW'
+    MEDIUM = 2, 'MEDIUM',
+    MEDIUM_HIGH = 3, 'MEDIUM_HIGH',
+    HIGH = 4, 'HIGH'
+
 
 class ToDo(models.Model):
-    title = models.CharField(max_length=255)
-    REACT = 'REACT'
-    DJANGO = 'DJANGO'
-    JAVASCRIPT = 'JAVASCRIPT'
-    LARAVEL='LARAVEL'
-
-    PRIORITY_CHOICES = [
-         (REACT,'REACT'),
-         (DJANGO,'DJANGO'),
-         (JAVASCRIPT,'JAVASCRIPT'),
-         (LARAVEL,'LARAVEL')
-    ]
-    priority = models.CharField(
-        choices= PRIORITY_CHOICES,
-        max_length=15
-    )
-    user = models.ForeignKey(users_models.User, on_delete=models.CASCADE)
+    title = models.CharField(max_length = 255)
+    priority = models.IntegerField(choices = ToDoPriority.choices, default = ToDoPriority.LOW)
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
