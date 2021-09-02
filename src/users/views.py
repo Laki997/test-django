@@ -4,5 +4,7 @@ from rest_framework.decorators import APIView
 from rest_framework.response import Response
 
 class HomeView(APIView):
-      Response({'message':'cao'})
+    
+      def get(self, request):
+          return Response({"message":"cao"})
 
