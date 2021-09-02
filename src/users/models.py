@@ -4,7 +4,6 @@ from django.contrib.auth.models import  AbstractUser
 from django.db.models.expressions import Value
 import uuid
 
-
 class User(AbstractUser):
     id = models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
     username = None
@@ -12,3 +11,6 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    # def __str__(self):
+    #     return self.username
