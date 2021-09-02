@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'src.users',
     'src.todo',
+    'rest_framework',
    
 ]
 
