@@ -8,6 +8,3 @@ class UserSerializer(serializers.ModelSerializer):
          model = User
          fields = ('id','first_name','last_name','password','email')
          extra_kwargs = {'password': {'write_only' : True}}
-       
-
-
