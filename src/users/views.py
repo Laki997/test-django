@@ -25,7 +25,10 @@ class UserViewSet(GenericViewSet, RetrieveModelMixin, CreateModelMixin):
       lookup_field = 'id'
       
       def retrieve(self, request, *args, **kwargs):
+        if self.request.user.is_superuser:
               return super().retrieve(request, *args, **kwargs)
+        else:
+              return Response({"error":"Nazalost samo admin user moze da poseti ovu stranicu!"})
     
       @action(detail=False, methods=['GET'], url_path='me', url_name='me', permission_classes=[IsAuthenticated], authentication_classes=[JWTAuthentication])
       def get_current_user(self, request):
