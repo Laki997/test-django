@@ -1,7 +1,7 @@
-from django.urls import path
-from .views import HomeView,UserViewSet
+from django import urls
+from django.db.backends.base import base
+from .views import UserViewSet
+from rest_framework import routers
 
-urlpatterns = [
-   path('', HomeView.as_view()),
-   path('users/<id>', UserViewSet.as_view())
-]
+users_router = routers.SimpleRouter()
+users_router.register(r'users',UserViewSet,basename='users')
