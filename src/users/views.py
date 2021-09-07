@@ -9,7 +9,6 @@ from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
 from .permissions import UserPermissions
 from django.db.models import Q
-from django.db.models.functions import Lower
 
 class HomeView(GenericAPIView):
      
@@ -26,14 +25,14 @@ class UserViewSet(GenericViewSet, RetrieveModelMixin, CreateModelMixin):
       def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
 
-      @action(detail = False, methods = ['GET'], url_path = 'me', url_name = 'me', permission_classes = [IsAuthenticated], authentication_classes = [JWTAuthentication])
+      @action(detail=False, methods=['GET'], url_path='me', url_name='me', permission_classes=[IsAuthenticated], authentication_classes=[JWTAuthentication])
       def get_current_user(self, request):
           serializer = UserSerializer(self.request.user)
           return Response(serializer.data)
 
-      @action(detail = False, methods = ['GET'], url_path = r'name/(?P<name>\w+)', url_name = 'name')
+      @action(detail=False, methods=['GET'], url_path=r'name/(?P<name>\w+)', url_name='name')
       def filter_by_first_or_last_name(self, request, name):
-        users = User.objects.filter(Q(first_name = name) | Q(last_name = name))
+        users = User.objects.filter_name(name)
         serializer = UserSerializer(users, many = True)
         return Response(serializer.data)
        
