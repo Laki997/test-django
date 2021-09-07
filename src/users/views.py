@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.core.checks.messages import Error
-from django.db.models.base import Model
+from django.db.models.base import Model, ModelBase
 from rest_framework.decorators import APIView, action, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -12,6 +12,7 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from django.contrib.admin.views.decorators import staff_member_required
+from .permissions import UserPermissions
 
 class HomeView(GenericAPIView):
      
@@ -23,13 +24,11 @@ class UserViewSet(GenericViewSet, RetrieveModelMixin, CreateModelMixin):
       queryset = User.objects.all()
       serializer_class = UserSerializer
       lookup_field = 'id'
+      permission_classes = [UserPermissions,]
       
       def retrieve(self, request, *args, **kwargs):
-        if self.request.user.is_superuser:
-              return super().retrieve(request, *args, **kwargs)
-        else:
-              return Response({"error":"Nazalost samo admin user moze da poseti ovu stranicu!"})
-    
+        return super().retrieve(request, *args, **kwargs)
+
       @action(detail=False, methods=['GET'], url_path='me', url_name='me', permission_classes=[IsAuthenticated], authentication_classes=[JWTAuthentication])
       def get_current_user(self, request):
           serializer = UserSerializer(self.request.user)
