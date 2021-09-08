@@ -8,6 +8,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
 from .permissions import UserPermissions
+from rest_framework.renderers import TemplateHTMLRenderer
 
 
 class HomeView(GenericAPIView):
@@ -22,9 +23,11 @@ class UserViewSet(GenericViewSet, RetrieveModelMixin, CreateModelMixin):
     serializer_class = UserSerializer
     lookup_field = 'id'
     permission_classes = [UserPermissions, ]
+    renderer_classes = [TemplateHTMLRenderer]
 
     def retrieve(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
+        return Response({'user': self.get_object},
+                        template_name='users/single_user.html')
 
     @action(detail=False, methods=['GET'], url_path='me', url_name='me',
             permission_classes=[IsAuthenticated],
